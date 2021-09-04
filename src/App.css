@@ -58,7 +58,6 @@ button:hover {
   line-height: 2;
   color: #60d63c;
   text-align: right;
-  direction: rtl;
   white-space: nowrap;
   box-sizing: border-box;
 }

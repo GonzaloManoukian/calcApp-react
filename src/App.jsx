@@ -1,47 +1,49 @@
-// Importaciones
-import React from 'react'
+/* eslint no-eval: 0 */
+import React, { useState } from 'react'
+import { words } from 'lodash'
+import Functions from './components/Functions'
+import MathOperations from './components/MathOperation'
+import Numbers from './components/Numbers'
 import Result from "./components/Result"
 import "./App.css"
 
-// Generacion de la funcion (flecha) del componente
 const App = () => {
-    // Lo que ejecuta la funcion
+    const [stack, setStack] = useState("");
+    //Utilizacion de lodash.words
+    const items = words(stack, /[^-^+^*^/]+/g)
+    const value = items.length > 0 ? items[items.length-1] : "0";
+
     return (
-    <main className="react-calculator">
+        <main className="react-calculator">
 
-        <Result />
+            <Result value={value} />
 
-        <div className="numbers">
-            <button>1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>4</button>
-            <button>5</button>
-            <button>6</button>
-            <button>7</button>
-            <button>8</button>
-            <button>9</button>
-            <button>0</button>
-        </div>
-        <div className="functions">
-            <button>
-                clear
-            </button>
-            <button>
-                r
-            </button>
-        </div>
-        <div className="math-operations">
-            <button>+</button>
-            <button>-</button>
-            <button>*</button>
-            <button>/</button>
-            <button>=</button>
-        </div>
-    </main>
+            <Numbers
+                onClickNumber={number => {
+                    setStack(`${stack}${number}`)
+                }} />
+
+            <Functions
+                onContentClear={() => {
+                    setStack("")
+                }}
+                onDelete={() => {
+                    if (stack.length > 0) {
+                        const newStack = stack.substring(0, stack.length - 1)
+                        setStack(newStack)
+                    }
+                } } />
+
+            <MathOperations
+                onClickOperation={operation => {
+                    setStack(`${stack}${operation}`)
+                }}
+                onClickEqual={() => {
+                    setStack(eval(stack).toString())
+                }} />
+        </main>
     )
 }
 
-// Exportacion
 export default App
 
